@@ -1,5 +1,5 @@
 #!/bin/bash
-# Example: source helpme.sh
+# helpme.sh: Execute AI-generated commands with safeguards
 
 # Run your Python program and capture its output (sanitizing it slightly)
 cmd=$(python3 /Users/masongill/Desktop/DB_friend/program.py | tr -d '\r' | awk '{$1=$1};1')
@@ -7,10 +7,32 @@ cmd=$(python3 /Users/masongill/Desktop/DB_friend/program.py | tr -d '\r' | awk '
 echo "Executing:"
 echo "$cmd"
 
-# Check for potentially destructive commands
-if [[ "$cmd" == *"rm -rf"* ]]; then
-    echo "⚠️  WARNING: You are about to execute a destructive command!"
-    echo "This will permanently delete files. Do you really want to continue? (yes/no)"
+# Define an array of destructive command patterns
+destructive_patterns=(
+    "rm"
+    "rm -rf"
+    "rm -rf /"
+    "rm -rf ~"
+    "dd if=/dev/zero"
+    "mkfs"
+    ":(){ :|:& };:"  # Fork bomb pattern
+    "shutdown"
+    "reboot"
+    "chmod -R 000"
+    "chown -R"
+)
+
+# Check if any destructive pattern is found in the command
+destructive_found=0
+for pattern in "${destructive_patterns[@]}"; do
+    if [[ "$cmd" == *"$pattern"* ]]; then
+        echo "⚠️  WARNING: Destructive command pattern detected: '$pattern'"
+        destructive_found=1
+    fi
+done
+# If a destructive pattern is detected, ask for extra confirmation
+if [[ $destructive_found -eq 1 ]]; then
+    echo "This command may be destructive. Do you really want to continue? (yes/no)"
     read -r confirm < /dev/tty
     if [[ "$confirm" != "yes" ]]; then
         echo "Aborted."
@@ -24,3 +46,4 @@ read -r dummy < /dev/tty
 
 # Execute the captured command in the current shell session
 eval "$cmd"
+
