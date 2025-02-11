@@ -5,20 +5,28 @@ import sys
 import os
 load_dotenv()
 
-
 api_key = os.environ.get("API_KEY")
 if not api_key:
-    raise ValueError("No API key found. Please set the OPENAI_API_KEY environment variable.")
+    raise ValueError("No API key found. Please set the API_KEY environment variable.")
 
 OpenAI.api_key = api_key
 
 client = OpenAI()
 
+# Detect the current shell
+shell_name = os.path.basename(os.environ.get("SHELL", "unknown"))
 
+# Set appropriate instruction based on the shell
+if shell_name == "zsh":
+    shell_instruction = "Program for Zsh NOT BASH."
+elif shell_name == "bash":
+    shell_instruction = "Program for Bash."
+else:
+    shell_instruction = f"Program for {shell_name}, behavior may be different."
 
 # Print prompt to stderr so it doesn't get captured by command substitution
 sys.stderr.write("How Can I Help You? ")
-initial_prompt = input()  
+initial_prompt = input()
 
 # Call the OpenAI API
 completion = client.chat.completions.create(
@@ -27,9 +35,9 @@ completion = client.chat.completions.create(
         {
             "role": "system",
             "content": (
-                "You only return a single-line Zsh command that executes the user's request. If you can not safely execute the command in a single line, return an error message."
-                "Do not include Markdown formatting, code block markers, or any extra text."
-                "Program for Zsh NOT BASH."
+                "You only return a single-line command that executes the user's request. If you cannot safely execute the command in a single line, return an error message. "
+                "Do not include Markdown formatting, code block markers, or any extra text. "
+                + shell_instruction
             )
         },
         {"role": "user", "content": initial_prompt}
@@ -39,11 +47,10 @@ completion = client.chat.completions.create(
 raw_output = completion.choices[0].message.content.strip()
 
 def clean_command(text):
-    # Remove any markdown code fences
     lines = text.splitlines()
     filtered_lines = [line for line in lines if not line.strip().startswith("```")]
     cleaned = "\n".join(filtered_lines).strip()
-    
+
     if cleaned.startswith("#!/bin/bash"):
         cleaned = "\n".join(cleaned.splitlines()[1:]).strip()
     
