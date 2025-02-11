@@ -27,7 +27,7 @@ completion = client.chat.completions.create(
         {
             "role": "system",
             "content": (
-                "You only return a single-line Bash command that executes the user's request. If you can not safely execute the command in a single line, return an error message."
+                "You only return a single-line Zsh command that executes the user's request. If you can not safely execute the command in a single line, return an error message."
                 "Do not include Markdown formatting, code block markers, or any extra text."
                 "Program for Zsh NOT BASH."
             )
