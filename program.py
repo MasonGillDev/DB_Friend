@@ -27,7 +27,7 @@ else:
 sys.stderr.write("How Can I Help You? ")
 initial_prompt = input()
 
-with open("prompt.txt", "w") as f:
+with open("/Users/masongill/Desktop/DB_friend/prompt.txt", "w") as f:
     f.write(initial_prompt)
 
 # Call the OpenAI API
