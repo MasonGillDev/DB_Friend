@@ -37,7 +37,7 @@ completion = client.chat.completions.create(
         {
             "role": "system",
             "content": (
-                "You only return a single-line command that executes the user's request. If you cannot safely execute the command in a single line, return an error message. "
+                "You only return commands that executes the user's request. If you cannot safely execute the command, return an error message. You are to return all the necessary commands to fulfill the user's request. "
                 "Do not include Markdown formatting, code block markers, or any extra text. "
                 + shell_instruction
             )

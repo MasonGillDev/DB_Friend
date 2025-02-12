@@ -38,6 +38,7 @@ if [[ $destructive_found -eq 1 ]]; then
         echo "Aborted."
         exit 1
     fi
+    exit 1
 fi
 
 # Wait for user confirmation before executing
@@ -48,6 +49,9 @@ read -r dummy < /dev/tty
 
 echo "Executing: $cmd"
 eval "$cmd" 2>&1 | tee /Users/masongill/Desktop/DB_friend/output.txt | grep --color=always -i "error\|failed\|no such file\|not found"
+eval "$cmd"
+
+
 
 output="/Users/masongill/Desktop/DB_friend/output.txt"
 command="$cmd"
