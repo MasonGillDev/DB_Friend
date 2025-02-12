@@ -1,8 +1,25 @@
-import subprocess
 from dotenv import load_dotenv
 from openai import OpenAI
 import sys
 import os
+
+
+if len(sys.argv) < 3:
+    print("Usage: debugger.py <output_file> <command> <prompt_file>")
+    sys.exit(1)
+
+
+output_file = sys.argv[1]
+command = str(sys.argv[2])
+prompt_file = "/Users/masongill/Desktop/DB_friend/prompt.txt"
+
+with open(output_file, "r") as f:
+    output_contents = f.read()
+
+with open(prompt_file, "r") as f:
+    prompt_contents = f.read()
+
+
 load_dotenv()
 
 api_key = os.environ.get("API_KEY")
@@ -13,7 +30,7 @@ OpenAI.api_key = api_key
 
 client = OpenAI()
 
-# Detect the current shell
+    # Detect the current shell
 shell_name = os.path.basename(os.environ.get("SHELL", "unknown"))
 
 
@@ -24,27 +41,24 @@ elif shell_name == "bash":
 else:
     shell_instruction = f"Program for {shell_name}, behavior may be different."
 
-sys.stderr.write("How Can I Help You? ")
-initial_prompt = input()
 
-with open("prompt.txt", "w") as f:
-    f.write(initial_prompt)
-
-# Call the OpenAI API
 completion = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
         {
             "role": "system",
             "content": (
-                "You only return a single-line command that executes the user's request. If you cannot safely execute the command in a single line, return an error message. "
-                "Do not include Markdown formatting, code block markers, or any extra text. "
+                "There is an error in the following command: " + command + "\n"
+                "The output of the command is: " + output_contents + "\n"
+                "The intended use for the command is: " + prompt_contents + "\n"
+                "You only return a single-line command that executes the user's request. If you cannot safely execute the command in a single line, return an error message. Offer a new solution to the problem different from the original command. "
                 + shell_instruction
             )
         },
-        {"role": "user", "content": initial_prompt}
+        {"role": "user", "content": prompt_contents}
     ]
 )
+
 
 raw_output = completion.choices[0].message.content.strip()
 
