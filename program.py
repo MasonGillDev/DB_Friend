@@ -61,3 +61,7 @@ def clean_command(text):
 command = clean_command(raw_output)
 
 print(command)
+
+
+# Going Forward I need to have the initial infrence to determine 
+# if it needs to run a funcion, get the output, then continue come up with a command.

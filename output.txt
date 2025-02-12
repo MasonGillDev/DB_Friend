@@ -1,10 +1,1 @@
-[advanced2.0 de05bc7] Your commit message
- 3 files changed, 6 insertions(+), 2 deletions(-)
-fatal: The current branch advanced2.0 has no upstream branch.
-To push the current branch and set the remote as upstream, use
-
-    git push --set-upstream origin advanced2.0
-
-To have this happen automatically for branches without a tracking
-upstream, see 'push.autoSetupRemote' in 'git help config'.
-
+(eval):1: no matches found: add?
