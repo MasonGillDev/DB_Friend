@@ -11,7 +11,7 @@ if not api_key:
 
 OpenAI.api_key = api_key
 
-client = OpenAI()
+client = OpenAI(api_key=api_key)
 
 # Detect the current shell
 shell_name = os.path.basename(os.environ.get("SHELL", "unknown"))

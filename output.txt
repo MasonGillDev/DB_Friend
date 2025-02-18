@@ -1,4 +1,5 @@
-[advanced2.0 f8ea787] Your commit message
- 5 files changed, 54 insertions(+), 58 deletions(-)
+[advanced2.0 72f8216] Your commit message here
+ 3 files changed, 50 insertions(+), 5 deletions(-)
+ create mode 100644 setup.py
 To https://github.com/MasonGillDev/DB_Friend.git
-   fe4b041..f8ea787  advanced2.0 -> advanced2.0
+   5ccece8..72f8216  advanced2.0 -> advanced2.0
