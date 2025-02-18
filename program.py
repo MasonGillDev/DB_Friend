@@ -27,7 +27,7 @@ else:
 sys.stderr.write("How Can I Help You? ")
 initial_prompt = input()
 
-with open("/Users/masongill/Desktop/DB_friend/prompt.txt", "w") as f:
+with open("./prompt.txt", "w") as f:
     f.write(initial_prompt)
 
 # Call the OpenAI API
@@ -37,8 +37,9 @@ completion = client.chat.completions.create(
         {
             "role": "system",
             "content": (
-                "You only return a single-line command that executes the user's request. If you cannot safely execute the command in a single line, return an error message. "
+                "You only return commands that executes the user's request. If you cannot safely execute the command, return an error message. You are to return all the necessary commands to fulfill the user's request. "
                 "Do not include Markdown formatting, code block markers, or any extra text. "
+                "Only return terminal commands, no other text at all. "
                 + shell_instruction
             )
         },
@@ -61,3 +62,7 @@ def clean_command(text):
 command = clean_command(raw_output)
 
 print(command)
+
+
+# Going Forward I need to have the initial infrence to determine 
+# if it needs to run a funcion, get the output, then continue come up with a command.
