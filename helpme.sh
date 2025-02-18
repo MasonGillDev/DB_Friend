@@ -2,7 +2,7 @@
 # helpme.sh: Execute AI-generated commands with safeguards
 
 # Run your Python program and capture its output (sanitizing it slightly)
-cmd=$(python3 ./program.py | tr -d '\r' | awk '{$1=$1};1')
+cmd=$(python3 $helpme_dir/program.py | tr -d '\r' | awk '{$1=$1};1')
 
 echo "Executing:"
 echo "$cmd"
@@ -48,12 +48,12 @@ read -r dummy < /dev/tty
 
 
 echo "Executing: $cmd"
-eval "$cmd" 2>&1 | tee ./output.txt | grep --color=always -i "error\|failed\|no such file\|not found"
+eval "$cmd" 2>&1 | tee $helpme_dir/output.txt | grep --color=always -i "error\|failed\|no such file\|not found"
 eval "$cmd"
 
 
 
-output="./output.txt"
+output="$helpme_dir/output.txt"
 command="$cmd"
 
 
