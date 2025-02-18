@@ -1,6 +1,0 @@
-(eval):1: no matches found: add?
-[advanced2.0 2dc9b24] Your commit message
- 4 files changed, 9 insertions(+), 11 deletions(-)
- create mode 100644 subroutine.py
-To https://github.com/MasonGillDev/DB_Friend.git
-   c7a3588..2dc9b24  advanced2.0 -> advanced2.0

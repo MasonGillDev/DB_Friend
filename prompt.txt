@@ -1,1 +1,1 @@
-git addd commit push
+git add commit and push
