@@ -35,7 +35,7 @@ def create_alias():
     else:
         print("Shell not recognized. Please add the alias manually.")
         return
-    alias_command = f"alias helpme='bash {helpme_path}'\n"
+    alias_command = f"alias helpme='source {helpme_path}'\n"
     # Append the alias to the appropriate shell configuration file
     with open(rc_file, "a") as f:
         f.write("\n# Alias for helpme command added by setup script\n")

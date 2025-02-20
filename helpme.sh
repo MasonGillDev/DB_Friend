@@ -2,7 +2,11 @@
 # helpme.sh: Execute AI-generated commands with safeguards
 
 # Run your Python program and capture its output (sanitizing it slightly)
+
 cmd=$(python3 ~/DB_Friend/program.py | tr -d '\r' | awk '{$1=$1};1')
+
+cmd=$(python3 $helpme_dir/program.py | tr -d '\r' | awk '{$1=$1};1')
+
 
 echo "Executing:"
 echo "$cmd"
@@ -48,8 +52,11 @@ read -r dummy < /dev/tty
 
 
 echo "Executing: $cmd"
+
 eval "$cmd" 2>&1 | tee ~/DB_Friend/output.txt | grep --color=always -i "error\|failed\|no such file\|not found"
+
 eval "$cmd"
+
 
 
 
@@ -96,7 +103,20 @@ if grep -qi "error\|failed\|no such file\|not found" ~/DB_Friend/output.txt; the
                 echo "Aborted."
                 exit 1
             fi
+
         fi
+    done
+
+    # If a destructive pattern is detected, ask for extra confirmation
+    if [[ $destructive_found -eq 1 ]]; then
+        echo "This command may be destructive. Do you really want to continue? (yes/no)"
+        read -r confirm < /dev/tty
+        if [[ "$confirm" != "yes" ]]; then
+            echo "Aborted."
+            exit 1
+        fi
+    fi
+
 
         # Wait for user confirmation before executing
         echo "Press Enter to execute the command..."
@@ -110,3 +130,4 @@ if grep -qi "error\|failed\|no such file\|not found" ~/DB_Friend/output.txt; the
         output="~/DB_Friend/output.txt"
         command="$cmd"
 fi
+
