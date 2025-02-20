@@ -5,7 +5,6 @@
 
 cmd=$(python3 ~/DB_Friend/program.py | tr -d '\r' | awk '{$1=$1};1')
 
-cmd=$(python3 $helpme_dir/program.py | tr -d '\r' | awk '{$1=$1};1')
 
 
 echo "Executing:"
