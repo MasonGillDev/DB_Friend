@@ -2,7 +2,7 @@
 # helpme.sh: Execute AI-generated commands with safeguards
 
 # Run your Python program and capture its output (sanitizing it slightly)
-cmd=$(python3 "$(dirname "$0")/program.py" | tr -d '\r' | awk '{$1=$1};1')
+cmd=$(python3 ./program.py | tr -d '\r' | awk '{$1=$1};1')
 
 echo "Executing:"
 echo "$cmd"
@@ -48,19 +48,19 @@ read -r dummy < /dev/tty
 
 
 echo "Executing: $cmd"
-eval "$cmd" 2>&1 | tee "$(dirname "$0")/output.txt" | grep --color=always -i "error\|failed\|no such file\|not found"
+eval "$cmd" 2>&1 | tee ./output.txt | grep --color=always -i "error\|failed\|no such file\|not found"
 eval "$cmd"
 
 
 
-output="$(dirname "$0")/output.txt"
+output="./output.txt"
 command="$cmd"
 
 
-if grep -qi "error\|failed\|no such file\|not found" "$(dirname "$0")/output.txt"; then
+if grep -qi "error\|failed\|no such file\|not found" ./output.txt; then
     while
         echo "Error detected. Re-running the Python program..."
-        cmd=$(python3 "$(dirname "$0")/debugger.py" "$output" "$command" | tr -d '\r' | awk '{$1=$1};1')
+        cmd=$(python3 ./debugger.py "$output" "$command" | tr -d '\r' | awk '{$1=$1};1')
 
         echo "Executing:"
         echo "$cmd"
@@ -105,10 +105,8 @@ if grep -qi "error\|failed\|no such file\|not found" "$(dirname "$0")/output.txt
 
 
         echo "Executing: $cmd"
-        eval "$cmd" 2>&1 | tee "$(dirname "$0")/output.txt" | grep --color=always -i "error\|failed\|no such file\|not found"
+        eval "$cmd" 2>&1 | tee ./output.txt | grep --color=always -i "error\|failed\|no such file\|not found"
 
-        output="$(dirname "$0")/output.txt"
+        output="./output.txt"
         command="$cmd"
 fi
-
-
