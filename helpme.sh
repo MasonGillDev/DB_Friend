@@ -104,7 +104,6 @@ if grep -qi "error\|failed\|no such file\|not found" ~/DB_Friend/output.txt; the
             fi
 
         fi
-    done
 
     # If a destructive pattern is detected, ask for extra confirmation
     if [[ $destructive_found -eq 1 ]]; then
